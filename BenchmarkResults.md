@@ -8,7 +8,7 @@ Allocated : Allocated memory per single operation (managed only, inclusive, 1KB 
 
 
 ### WithResultInstances
-[Code](https://github.com/mcarey1590/fp_playground/blob/0e8b08219550dea21394c82df7d0792865951258/WithResultInstances.cs)
+[Code](https://github.com/mcarey1590/fp_playground/blob/main/WithResultInstances.cs)
 
 ``` ini  
   
@@ -25,7 +25,7 @@ Intel Core i9-9880H CPU 2.30GHz, 1 CPU, 16 logical and 8 physical cores
 |       DoSomethingWithId_TheOne_ReturnsSuccessful | 164.27 ns | 0.696 ns | 0.617 ns | 0.0420 |     352 B |
 
 ### WithLocalException
-[Code](https://github.com/mcarey1590/fp_playground/blob/0e8b08219550dea21394c82df7d0792865951258/WithLocalException.cs)
+[Code](https://github.com/mcarey1590/fp_playground/blob/main/WithLocalException.cs)
 
 ``` ini  
   
@@ -42,7 +42,7 @@ Intel Core i9-9880H CPU 2.30GHz, 1 CPU, 16 logical and 8 physical cores
 |       DoSomethingWithId_TheOne_ReturnsSuccessful |    157.9 ns |   3.12 ns |   4.57 ns | 0.0477 |     400 B |
 
 ### WithFpLanguageExt
-[Code](https://github.com/mcarey1590/fp_playground/blob/0e8b08219550dea21394c82df7d0792865951258/WithFpLanguageExt.cs)
+[Code](https://github.com/mcarey1590/fp_playground/blob/main/WithFpLanguageExt.cs)
 
 ``` ini  
   

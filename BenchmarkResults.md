@@ -54,8 +54,8 @@ Intel Core i9-9880H CPU 2.30GHz, 1 CPU, 16 logical and 8 physical cores
 
 
 ```
-|                                           Method |      Mean |    Error |   StdDev |  Gen 0 | Allocated |
-|------------------------------------------------- |----------:|---------:|---------:|-------:|----------:|
-|  DoSomethingWithId_EmptyGuid_ReturnsErrorMessage |  29.72 ns | 0.243 ns | 0.215 ns | 0.0134 |     112 B |
-| DoSomethingWithId_RandomGuid_ReturnsErrorMessage | 227.86 ns | 3.421 ns | 3.200 ns | 0.0372 |     312 B |
-|       DoSomethingWithId_TheOne_ReturnsSuccessful | 164.27 ns | 0.696 ns | 0.617 ns | 0.0420 |     352 B |
+|                                           Method |     Mean |   Error |  StdDev |  Gen 0 | Allocated |
+|------------------------------------------------- |---------:|--------:|--------:|-------:|----------:|
+|  DoSomethingWithId_EmptyGuid_ReturnsErrorMessage | 143.4 ns | 0.47 ns | 0.36 ns | 0.0429 |     360 B |
+| DoSomethingWithId_RandomGuid_ReturnsErrorMessage | 390.2 ns | 1.24 ns | 1.10 ns | 0.0601 |     504 B |
+|       DoSomethingWithId_TheOne_ReturnsSuccessful | 303.7 ns | 5.50 ns | 4.60 ns | 0.0477 |     400 B |

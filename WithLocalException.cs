@@ -1,8 +1,11 @@
-using FP_Playground;
+using BenchmarkDotNet.Attributes;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-public class ExampleClass
+namespace FP_Playground;
+
+public class WithLocalException
 {
-    public Result<object> DoSomethingWithId(Guid id)
+    public Result<SampleClass> DoSomethingWithId(Guid id)
     {
         try
         {
@@ -10,55 +13,96 @@ public class ExampleClass
                 .AndThen(ValidateId)
                 .AndThen(FetchEntityById)
                 .AndThen(DoSomethingWithEntity);
-            return Result<object>.Success(result);
+            return Result<SampleClass>.Success(result);
         }
         catch (PlatformServiceException e)
         {
-            return Result<object>.Error(e.Message);
+            return Result<SampleClass>.Error(e.Message);
         }
     }
 
-    private object DoSomethingWithEntity(object model)
+    private SampleClass DoSomethingWithEntity(SampleClass model)
     {
         return DoSubRoutine(model);
     }
 
-    private object DoSubRoutine(object model)
+    private SampleClass DoSubRoutine(SampleClass model)
     {
         return DoSubSubRoutine1(model)
             .AndThen(DoSubSubRoutine2);
     }
 
-    private object DoSubSubRoutine1(object model)
+    private SampleClass DoSubSubRoutine1(SampleClass model)
     {
-        return new object();
+        return model;
     }
 
-    private object DoSubSubRoutine2(object model)
+    private SampleClass DoSubSubRoutine2(SampleClass model)
     {
-        var subSubSubRoutineResult = DoSubSubSubRoutine(model);
+        var result = DoSubSubSubRoutine(model);
 
-        var someCondition = false;
-        if (!someCondition)
+        if (string.IsNullOrEmpty(result.Name))
         {
-            throw new PlatformServiceException("DoSubSubRoutine2 error");
+            throw new PlatformServiceException("Does not have a name!");
         }
 
-        return new object();
+        return result;
     }
 
-    private object DoSubSubSubRoutine(object model)
+    private SampleClass DoSubSubSubRoutine(SampleClass model)
     {
-        return new object();
+        var returnVal = new SampleClass();
+        if (model.Id == Guid.Parse("11111111-1111-1111-1111-111111111111"))
+        {
+            returnVal.Name = "The One!";
+        }
+
+        return returnVal;
     }
 
-    private object FetchEntityById(Guid id)
+    private SampleClass FetchEntityById(Guid id)
     {
-        return new object();
+        return new SampleClass {Id = id};
     }
 
     private Guid ValidateId(Guid id)
     {
+        if (id == Guid.Empty)
+        {
+            throw new PlatformServiceException("Must provide a valid Guid Id!");
+        }
+
         return id;
+    }
+}
+
+[TestClass]
+public class WithLocalExceptionTests
+{
+    [TestMethod]
+    [Benchmark]
+    public void DoSomethingWithId_EmptyGuid_ReturnsErrorMessage()
+    {
+        var res = new WithLocalException().DoSomethingWithId(Guid.Empty);
+        Assert.IsFalse(res.WasSuccessful);
+        Assert.AreEqual("Must provide a valid Guid Id!", res.Message);
+    }
+
+    [TestMethod]
+    [Benchmark]
+    public void DoSomethingWithId_RandomGuid_ReturnsErrorMessage()
+    {
+        var res = new WithLocalException().DoSomethingWithId(Guid.NewGuid());
+        Assert.IsFalse(res.WasSuccessful);
+        Assert.AreEqual("Does not have a name!", res.Message);
+    }
+
+    [TestMethod]
+    [Benchmark]
+    public void DoSomethingWithId_TheOne_ReturnsSuccessful()
+    {
+        var res = new WithLocalException().DoSomethingWithId(Guid.Parse("11111111-1111-1111-1111-111111111111"));
+        Assert.IsTrue(res.WasSuccessful);
+        Assert.AreEqual("The One!", res.Model.Name);
     }
 }

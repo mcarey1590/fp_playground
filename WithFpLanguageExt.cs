@@ -1,6 +1,7 @@
+using BenchmarkDotNet.Attributes;
 using LanguageExt;
 using LanguageExt.Common;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static LanguageExt.Prelude;
 
 namespace FP_Playground;
@@ -32,7 +33,7 @@ public class WithFpLanguageExt
     private Validation<Error, SampleClass> DoSubSubRoutine1(SampleClass model)
     {
         // do something here
-        return Success<Error, SampleClass>(model);
+        return model;
     }
 
     private Validation<Error, SampleClass> DoSubSubRoutine2(SampleClass model)
@@ -44,7 +45,7 @@ public class WithFpLanguageExt
                 return Fail<Error, SampleClass>(Error.New("Does not have a name!"));
             }
 
-            return Success<Error, SampleClass>(result);
+            return result;
         });
     }
 
@@ -56,12 +57,12 @@ public class WithFpLanguageExt
             returnVal.Name = "The One!";
         }
 
-        return Success<Error, SampleClass>(returnVal);
+        return returnVal;
     }
 
     private Validation<Error, SampleClass> FetchEntityById(Guid id)
     {
-        return Success<Error, SampleClass>(new SampleClass {Id = id});
+        return new SampleClass {Id = id};
     }
 
     private Validation<Error, Guid> ValidateId(Guid id)
@@ -71,33 +72,37 @@ public class WithFpLanguageExt
             return Fail<Error, Guid>(Error.New("Must provide a valid Guid Id!"));
         }
 
-        return Success<Error, Guid>(id);
+        return id;
     }
 }
 
+[TestClass]
 public class WithFpLanguageExtTests
 {
-    [Test]
+    [TestMethod]
+    [Benchmark]
     public void DoSomethingWithId_EmptyGuid_ReturnsErrorMessage()
     {
         var res = new WithFpLanguageExt().DoSomethingWithId(Guid.Empty);
-        Assert.False(res.WasSuccessful);
+        Assert.IsFalse(res.WasSuccessful);
         Assert.AreEqual("Must provide a valid Guid Id!", res.Message);
     }
 
-    [Test]
+    [TestMethod]
+    [Benchmark]
     public void DoSomethingWithId_RandomGuid_ReturnsErrorMessage()
     {
         var res = new WithFpLanguageExt().DoSomethingWithId(Guid.NewGuid());
-        Assert.False(res.WasSuccessful);
+        Assert.IsFalse(res.WasSuccessful);
         Assert.AreEqual("Does not have a name!", res.Message);
     }
 
-    [Test]
+    [TestMethod]
+    [Benchmark]
     public void DoSomethingWithId_TheOne_ReturnsSuccessful()
     {
         var res = new WithFpLanguageExt().DoSomethingWithId(Guid.Parse("11111111-1111-1111-1111-111111111111"));
-        Assert.True(res.WasSuccessful);
+        Assert.IsTrue(res.WasSuccessful);
         Assert.AreEqual("The One!", res.Model.Name);
     }
 }

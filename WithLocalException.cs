@@ -77,6 +77,7 @@ public class WithLocalException
 }
 
 [TestClass]
+[MemoryDiagnoser]
 public class WithLocalExceptionTests
 {
     [TestMethod]

@@ -110,6 +110,7 @@ public class WithResultInstances
 }
 
 [TestClass]
+[MemoryDiagnoser]
 public class WithResultInstancesTests
 {
     [TestMethod]

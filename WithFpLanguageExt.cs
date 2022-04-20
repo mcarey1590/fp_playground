@@ -40,12 +40,9 @@ public class WithFpLanguageExt
     {
         return DoSubSubSubRoutine(model).Bind((result) =>
         {
-            if (string.IsNullOrEmpty(result.Name))
-            {
-                return Fail<Error, SampleClass>(Error.New("Does not have a name!"));
-            }
+            if (!string.IsNullOrEmpty(result.Name)) return result;
+            return Fail<Error, SampleClass>(Error.New("Does not have a name!"));
 
-            return result;
         });
     }
 
@@ -77,6 +74,7 @@ public class WithFpLanguageExt
 }
 
 [TestClass]
+[MemoryDiagnoser]
 public class WithFpLanguageExtTests
 {
     [TestMethod]

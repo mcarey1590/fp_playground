@@ -5,7 +5,7 @@ using static FP_Playground.Either.EitherExtensions;
 
 namespace FP_Playground;
 
-public class WithFpLanguageExt
+public class WithEitherMonad
 {
     public Result<SampleClass> DoSomethingWithId(Guid id)
     {
@@ -74,13 +74,13 @@ public class WithFpLanguageExt
 
 [TestClass]
 [MemoryDiagnoser]
-public class WithFpLanguageExtTests
+public class WithEitherMonadTests
 {
     [TestMethod]
     [Benchmark]
     public void DoSomethingWithId_EmptyGuid_ReturnsErrorMessage()
     {
-        var res = new WithFpLanguageExt().DoSomethingWithId(Guid.Empty);
+        var res = new WithEitherMonad().DoSomethingWithId(Guid.Empty);
         Assert.IsFalse(res.WasSuccessful);
         Assert.AreEqual("Must provide a valid Guid Id!", res.Message);
     }
@@ -89,7 +89,7 @@ public class WithFpLanguageExtTests
     [Benchmark]
     public void DoSomethingWithId_RandomGuid_ReturnsErrorMessage()
     {
-        var res = new WithFpLanguageExt().DoSomethingWithId(Guid.NewGuid());
+        var res = new WithEitherMonad().DoSomethingWithId(Guid.NewGuid());
         Assert.IsFalse(res.WasSuccessful);
         Assert.AreEqual("Does not have a name!", res.Message);
     }
@@ -98,7 +98,7 @@ public class WithFpLanguageExtTests
     [Benchmark]
     public void DoSomethingWithId_TheOne_ReturnsSuccessful()
     {
-        var res = new WithFpLanguageExt().DoSomethingWithId(Guid.Parse("11111111-1111-1111-1111-111111111111"));
+        var res = new WithEitherMonad().DoSomethingWithId(Guid.Parse("11111111-1111-1111-1111-111111111111"));
         Assert.IsTrue(res.WasSuccessful);
         Assert.AreEqual("The One!", res.Model.Name);
     }
